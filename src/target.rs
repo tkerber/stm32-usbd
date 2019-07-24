@@ -7,6 +7,8 @@ pub use stm32f0xx_hal as hal;
 pub use stm32f1xx_hal as hal;
 #[cfg(feature = "stm32f3")]
 pub use stm32f3xx_hal as hal;
+#[cfg(feature = "stm32f4")]
+pub use stm32f4xx_hal as hal;
 #[cfg(feature = "stm32l4")]
 pub use stm32l4xx_hal as hal;
 
@@ -18,6 +20,8 @@ pub use hal::stm32::USB;
 pub use hal::stm32::USB;
 #[cfg(feature = "stm32f3")]
 pub use hal::stm32::USB;
+#[cfg(feature = "stm32f4")]
+pub use hal::stm32::OTG_FS_DEVICE as USB;
 #[cfg(feature = "stm32l4")]
 pub use hal::stm32::USB;
 
@@ -55,6 +59,8 @@ pub fn apb_usb_enable() {
         match () {
             #[cfg(any(feature = "stm32f0", feature = "stm32f1", feature = "stm32f3"))]
             () => rcc.apb1enr.modify(|_, w| w.usben().set_bit()),
+            #[cfg(feature = "stm32f4")]
+            () => rcc.ahb2enr.modify(|_, w| w.otgfsen().set_bit()),
             #[cfg(feature = "stm32l4")]
             () => rcc.apb1enr1.modify(|_, w| w.usbfsen().set_bit()),
         }
@@ -131,6 +137,15 @@ pub mod usb_pins {
     use super::hal::gpio::gpioa::{PA11, PA12};
 
     pub type UsbPinsType = (PA11<AF14>, PA12<AF14>);
+    impl super::UsbPins for UsbPinsType {}
+}
+
+#[cfg(feature = "stm32f4")]
+pub mod usb_pins {
+    use super::hal::gpio::{Input, Floating};
+    use super::hal::gpio::gpioa::{PA11, PA12};
+
+    pub type UsbPinsType = (PA11<Input<Floating>>, PA12<Input<Floating>>);
     impl super::UsbPins for UsbPinsType {}
 }
 

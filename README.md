@@ -17,6 +17,7 @@ This repository is a fork for the [mvirkkunen/stm32f103xx-usb](https://github.co
 * `STM32F078xx`
 * `STM32F103xx`
 * `STM32F303xC`
+* `STM32F401xx`
 * `STM32L4x2xx`
 * And others...
 
@@ -42,6 +43,7 @@ Device family:
 * `stm32f0`
 * `stm32f1`
 * `stm32f3`
+* `stm32f4`
 * `stm32l4`
 
 Size of dedicated packet buffer memory SRAM:
